@@ -1,0 +1,22 @@
+image: docker:19.03.12
+
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+
+services:
+  - docker:19.03.12-dind
+
+before_script:
+  - docker info
+
+build:
+  stage: build
+  tags:
+    - docker
+    - centos
+  before_script:
+    - docker info
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build -t registry.git.chalmers.se/courses/dit355/dit356-2022/t-12/api-gateway .
+    - docker push registry.git.chalmers.se/courses/dit355/dit356-2022/t-12/api-gateway

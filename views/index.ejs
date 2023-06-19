@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+          crossorigin="anonymous">
+    <title>Dentisimo - API Gateway</title>
+</head>
+<body>
+    <div class="container">
+        <div class="d-flex justify-content-center">
+            <h1 class="text-success my-4">API Gateway - Registered Services</h1>
+        </div>
+        <div class="services">
+            <% Object.entries(services).forEach(service => { %>
+                <div class="card mb-5">
+                    <div class="card-header bg-success bg-opacity-10 px-4 py-3">
+                        <h4><%= service[0] %></h4>
+                    </div>
+                    <div class="card-body list-group list-group-flush">
+                        <div class="list-group-item">
+                            <h5>Load Balancer Strategy</h5>
+                            <p><%= service[1].loadBalanceStrategy %></p>
+                        </div>
+                        <div class="list-group-item">
+                            <h5>Registered Instances (<%= service[1].instances.length %>)</h5>
+                            <div class="d-flex flex-row overflow-scroll">
+                                <% service[1].instances.forEach((instance, index) => { %>
+                                    <div class="col-lg-2 col-sm-4 col-xs-6 my-2 mx-2">
+                                        <div class="card">
+                                            <div class="card-header fw-bold">
+                                                <%= index + 1 + ": " + instance.serviceName %>
+                                            </div>
+                                            <div class="card-body">
+                                                <ul class="list-group list-group-flush">
+                                                    <li class="list-group-item">Protocol: <%= instance.protocol %></li>
+                                                    <li class="list-group-item">Host: <%= instance.host %></li>
+                                                    <li class="list-group-item">Port: <%= instance.port %></li>
+                                                    <li class="list-group-item">Enabled:
+                                                        <% if (instance.enabled) { %>
+                                                            <span class="text-success">True</span>
+                                                        <%} else { %>
+                                                            <span class="text-danger">False</span>
+                                                        <% } %>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</body>
+</html>
